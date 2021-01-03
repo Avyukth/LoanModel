@@ -62,7 +62,7 @@ class Loan:
         # current date and time
         now = datetime.now()
 
-        next_payment_dew = now+timedelta(days=terms*30)
+        next_payment_dew = now+timedelta(days=(terms+1)*30)
 
         return next_payment_dew
 
