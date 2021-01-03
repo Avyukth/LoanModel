@@ -12,11 +12,11 @@ class Loan:
 
         self.loan_amount = loan_amount
 
-    #Calculate Total Interest
+    # Calculate Total Interest
     def get_total_interest(self):
         return (self.loan_amount*self.interest_rate)/100
 
-    #Generate Loan Interest
+    # Generate Loan Interest
     def gen_loan(self):
         loan = {}
 
@@ -29,7 +29,7 @@ class Loan:
 
         return loan
 
-    #Save Loan info to the database
+    # Save Loan info to the database
     def save_loan(self):
 
         db = self.get_db_connection()
@@ -47,7 +47,7 @@ class Loan:
 
         db.close()
 
-    #Save Loan details to the database
+    # Save Loan details to the database
     def save_loan_info(self, db):
         total_interest = self.get_total_interest()
 
@@ -56,7 +56,7 @@ class Loan:
         db.execute(f"INSERT INTO LOAN (EMAIL,LOAN_AMOUNT,INTEREST_RATE,REPAYMENT_TERMS) \
       VALUES ('{self.email}',{self.loan_amount},{self.interest_rate}, {self.repayment_terms} )")
 
-    #calculate repayment information
+    # calculate repayment information
     def calculate_payment_time(self, terms):
 
         # current date and time
@@ -66,7 +66,7 @@ class Loan:
 
         return next_payment_dew
 
-    #Save Loan details to the database
+    # Save Loan details to the database
     def save_loan_details(self, terms, loan, connection):
         next_payment_dew = self.calculate_payment_time(terms)
 
@@ -75,7 +75,7 @@ class Loan:
         connection.execute(f"INSERT INTO LOAN_DETAILS (TERM_NO,EMAIL,PRINCIPAL,INTEREST,TOTAL_AMOUNT,PAYMENT_DUE_DATE) \
       VALUES ({terms+1},'{self.email}',{loan['principal']},{loan['interest']},{total_Amount},'{next_payment_dew}' )")
 
-    #process repayment info from the database
+    # process repayment info from the database
     def repayment(self, email, repayment_amount):
         db = self.get_db_connection()
 
@@ -99,14 +99,14 @@ class Loan:
 
         db.close()
 
-    #Save repayment to the database
+    # Save repayment to the database
     def save_repayment(self, record, db):
         now = datetime.now()
 
         db.execute(
             f"UPDATE LOAN_DETAILS SET LOAN_STATUS=1 ,PAYMENT_TIME = '{now}' WHERE ID ={record[0]}")
 
-    #Show loan details from the database
+    # Show loan details from the database
     def show_installment(self, email):
         db = self.get_db_connection()
 
@@ -115,27 +115,29 @@ class Loan:
 
         list_of_installment = db.cursor.fetchall()
 
-        result=[f"| Term   | Principal | Interest | Total     | Date         | Status   |"]
+        result = [
+            f"| Term   | Principal | Interest | Total     | Date         | Status   |"]
 
-        result.append(f"________________________________________________________________________")
+        result.append(
+            f"________________________________________________________________________")
 
         if len(list_of_installment) > 0:
 
             for record in list_of_installment:
                 if record[7]:
-                    status="Paid    "
+                    status = "Paid    "
                 else:
-                    status="Not-Paid"
-                result.append(f"| {record[1]}      | {record[3]}     | {record[4]}    | {record[5]}     | {record[6].split()[0]}   | {status} |")
+                    status = "Not-Paid"
+                result.append(
+                    f"| {record[1]}      | {record[3]}     | {record[4]}    | {record[5]}     | {record[6].split()[0]}   | {status} |")
 
         db.close()
 
         return "\n".join(result)
 
-    #retreive database connection
+    # retreive database connection
     def get_db_connection(self):
 
         db = Database()
 
         return db
-

@@ -9,7 +9,6 @@ class Database(object):
         self.connection = sqlite3.connect(self.__DB_LOCATION)
         self.cursor = self.connection.cursor()
 
-
     def __exit__(self, ext_type, exc_value, traceback):
 
         self.cursor.close()
@@ -23,7 +22,6 @@ class Database(object):
             self.connection.commit()
 
         self.connection.close()
-
 
     def __enter__(self):
 
@@ -54,13 +52,12 @@ class Database(object):
 
         self.commit()
 
-
     def close(self):
         """close sqlite3 connection"""
         self.connection.close()
 
-
     # execute funtion to execute query  efficiently
+
     def execute(self, new_query):
         """execute a row of data to current cursor"""
 
@@ -73,8 +70,8 @@ class Database(object):
         finally:
             self.commit()
 
-
    # commit funtion to commit  efficiently
+
     def commit(self):
         """commit changes to database"""
         self.connection.commit()

@@ -7,28 +7,38 @@ import loan_pb2_grpc
 channel = grpc.insecure_channel('localhost:50051')
 
 # create a stub (client)
-stub=loan_pb2_grpc.LoanStub(channel)
+stub = loan_pb2_grpc.LoanStub(channel)
 
 email = 'test@example.com'
+
+# client sending loan details to the server
 
 
 def save_loan():
 
-    loan=loan_pb2.loan_data(email=email, interest_rate=10.0, repayment_terms=2, loan_amount=1000)
+    loan = loan_pb2.loan_data(
+        email=email, interest_rate=10.0, repayment_terms=2, loan_amount=1000)
 
     stub.save_loan(loan)
 
-def show_installment():
-    installment=loan_pb2.installement_data(email=email)
+# client sending  and retriving data about different installment from the server
 
-    instalment_data=stub.show_installment(installment)
+
+def show_installment():
+    installment = loan_pb2.installement_data(email=email)
+
+    instalment_data = stub.show_installment(installment)
 
     print(instalment_data.installement_message)
 
-def  repayment():
-    repayment=loan_pb2.repayment_data(email=email,repayment_amount=600)
+# client sending repayment details to the server
+
+
+def repayment():
+    repayment = loan_pb2.repayment_data(email=email, repayment_amount=600)
 
     stub.repayment(repayment)
+
 
 def main():
     save_loan()
