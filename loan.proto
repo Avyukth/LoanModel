@@ -1,0 +1,38 @@
+syntax ="proto3";
+
+
+// The Loan service definition.
+service Loan {
+  rpc save_loan (loan_data) returns (empty) {}
+  rpc show_installment (installement_data) returns (installement_response) {}
+  rpc repayment (repayment_data) returns (empty) {}
+}
+
+// The Loan message containing loan data.
+message loan_data {
+   string email = 1;
+   double  interest_rate= 2;
+   int32  repayment_terms  = 3;
+   double loan_amount = 4;
+
+}
+
+// The request message containing the Installment query Data
+
+message installement_data {
+   string email = 1;
+}
+
+// The response message containing the Installment Data
+message installement_response {
+   string installement_message = 1;
+}
+
+// The request message containing the repayment details Data
+message repayment_data {
+   string email = 1;
+   double repayment_amount=2;
+}
+
+// The empty response message for None returning api
+message empty {}
